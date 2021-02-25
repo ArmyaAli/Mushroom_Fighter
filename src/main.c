@@ -4,6 +4,14 @@
 #define MAX_FRAME_SPEED 15
 #define MIN_FRAME_SPEED 1
 
+typedef enum gameState
+{
+    PLAY,
+    PAUSE,
+    MENU,
+    HELP
+} STATE;
+
 typedef enum moveDirection
 {
     UP,
@@ -20,11 +28,19 @@ typedef struct frameInformation
     Rectangle frameRec;
 } frameInformation;
 
-Vector2 playerPosition =
+typedef struct menuButtons
 {
-    0.0f,
-    0.0f
-};
+    Rectangle PLAY_BUTTON;
+    Rectangle HELP_BUTTON;
+    Rectangle EXIT_BUTTON;
+} menuButtons;
+
+Vector2 playerPosition =
+    {
+        0.0f,
+        0.0f};
+// LOAD INTO MENU BY DEFAULT
+STATE currentSTATE = MENU;
 
 const int screenHeight = 400;
 const int screenWidth = 800;
@@ -35,6 +51,8 @@ void updatePlayerPosition();
 bool isPlayerMoving();
 void controlAnimation(frameInformation *data, Texture2D *sheet);
 void cropSpriteSheetOnDirection(frameInformation *data, Texture2D *sheet);
+void updateGameState();
+void drawMenu();
 
 int main(void)
 {
@@ -47,28 +65,51 @@ int main(void)
     Texture2D Player = LoadTextureFromImage(playerImage);
     Texture2D sheet = LoadTextureFromImage(playerSpriteSheet);
 
+    menuButtons menuButtons = {
+        {screenWidth / 2 - 100, screenHeight / 4 - 40, 200, 80},
+        {screenWidth / 2 - 100, screenHeight / 4 + 80, 200, 80},
+        {screenWidth / 2 - 100, screenHeight / 4 + 200, 200, 80}};
+
     SetTargetFPS(60);
 
-    frameInformation frameData = 
-    {
-        0,
-        0, 
-        4, 
-        {0.0f, 0.0f, (float)sheet.width / 4, (float)sheet.height / 4}
-    };
+    frameInformation frameData =
+        {
+            0,
+            0,
+            4,
+            {0.0f, 0.0f, (float)sheet.width / 4, (float)sheet.height / 4}};
 
     while (!WindowShouldClose())
     {
         controlAnimation(&frameData, &sheet);
         cropSpriteSheetOnDirection(&frameData, &sheet);
-
+        updateGameState(&menuButtons);
         BeginDrawing();
-
-        updatePlayerPosition((Vector2){Player.width, Player.width});
         ClearBackground(RAYWHITE);
-        DrawTextureRec(sheet, frameData.frameRec, (Vector2){playerPosition.x, playerPosition.y}, WHITE);
-        DrawText("Welcome to Mushroom Fighter", 360, 370, 24, GRAY);
-        
+
+        switch (currentSTATE)
+        {
+        case MENU:
+            DrawRectangleRec(menuButtons.PLAY_BUTTON, GREEN);
+            DrawRectangleRec(menuButtons.HELP_BUTTON, BLUE);
+            DrawRectangleRec(menuButtons.EXIT_BUTTON, RED);
+            break;
+        case HELP:
+            DrawRectangleRec(menuButtons.PLAY_BUTTON, GREEN);
+            DrawText("You are in the HELP screen", 360, 370, 24, GRAY);
+            break;
+        case PLAY:
+            updatePlayerPosition((Vector2){Player.width, Player.width});
+            DrawTextureRec(sheet, frameData.frameRec, (Vector2){playerPosition.x, playerPosition.y}, WHITE);
+            DrawText("Welcome to Mushroom Fighter", 360, 370, 24, GRAY);
+            break;
+        case PAUSE:
+            DrawText("You are in the Pause screen", 360, 370, 24, GRAY);
+            break;
+        }
+
+        // drawMenu();
+
         EndDrawing();
     }
 
@@ -80,6 +121,51 @@ int main(void)
     return 0;
 }
 
+void updateGameState(menuButtons *mButtons)
+{
+    Vector2 mousePos = GetMousePosition();
+    switch (currentSTATE)
+    {
+    case MENU:
+        if (CheckCollisionPointRec(mousePos, mButtons->PLAY_BUTTON))
+        {
+            if (IsMouseButtonPressed(0))
+                currentSTATE = PLAY;
+        }
+        else if (CheckCollisionPointRec(mousePos, mButtons->HELP_BUTTON))
+        {
+            if (IsMouseButtonPressed(0))
+                currentSTATE = HELP;
+        }
+        else if (CheckCollisionPointRec(mousePos, mButtons->EXIT_BUTTON))
+        {
+            if (IsMouseButtonPressed(0))
+                CloseWindow();
+        }
+        break;
+    case PLAY:
+        if (IsKeyPressed(KEY_P))
+        {
+            currentSTATE = PAUSE;
+        }
+        break;
+    case PAUSE:
+        if (IsKeyPressed(KEY_P))
+        {
+            currentSTATE = PLAY;
+        }
+        break;
+    }
+}
+void drawMenu()
+{
+    // PLAY BUTTON
+    DrawRectangle(screenWidth / 2 - 100, screenHeight / 4 - 40, 200, 80, GREEN);
+    // HELP BUTTON
+    DrawRectangle(screenWidth / 2 - 100, screenHeight / 4 + 80, 200, 80, BLUE);
+    // EXIT BUTTON
+    DrawRectangle(screenWidth / 2 - 100, screenHeight / 4 + 200, 200, 80, RED);
+}
 void cropSpriteSheetOnDirection(frameInformation *data, Texture2D *sheet)
 {
     switch (dir)
@@ -105,7 +191,6 @@ void controlAnimation(frameInformation *data, Texture2D *sheet)
 
     if (data->framesCounter >= (60 / data->framesSpeed) && !isPlayerMoving())
     {
-        printf("moving");
         data->framesCounter = 0;
         data->currentFrame++;
 
