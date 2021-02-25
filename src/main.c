@@ -20,7 +20,7 @@ typedef struct frameInformation
     Rectangle frameRec;
 } frameInformation;
 
-Vector2 playerPosition = 
+Vector2 playerPosition =
 {
     0.0f,
     0.0f
@@ -34,6 +34,7 @@ moveDirection dir;
 void updatePlayerPosition();
 bool isPlayerMoving();
 void controlAnimation(frameInformation *data, Texture2D *sheet);
+void cropSpriteSheetOnDirection(frameInformation *data, Texture2D *sheet);
 
 int main(void)
 {
@@ -47,37 +48,27 @@ int main(void)
     Texture2D sheet = LoadTextureFromImage(playerSpriteSheet);
 
     SetTargetFPS(60);
-    frameInformation frameData = {0, 0, 4, {0.0f, 0.0f, (float)sheet.width / 4, (float)sheet.height / 4}};
+
+    frameInformation frameData = 
+    {
+        0,
+        0, 
+        4, 
+        {0.0f, 0.0f, (float)sheet.width / 4, (float)sheet.height / 4}
+    };
 
     while (!WindowShouldClose())
     {
         controlAnimation(&frameData, &sheet);
-
-        if (dir == LEFT)
-        {
-            frameData.frameRec.y = 1 * (float)(sheet.width / 4);
-        }
-
-        if (dir == RIGHT)
-        {
-            frameData.frameRec.y = 2 * (float)(sheet.width / 4);
-        }
-
-        if (dir == UP)
-        {
-            frameData.frameRec.y = 3 * (float)(sheet.width / 4);
-        }
-
-        if (dir == DOWN)
-        {
-            frameData.frameRec.y = 0 * (float)(sheet.width / 4);
-        }
+        cropSpriteSheetOnDirection(&frameData, &sheet);
 
         BeginDrawing();
+
         updatePlayerPosition((Vector2){Player.width, Player.width});
         ClearBackground(RAYWHITE);
         DrawTextureRec(sheet, frameData.frameRec, (Vector2){playerPosition.x, playerPosition.y}, WHITE);
-        DrawText("this IS a texture!", 360, 370, 10, GRAY);
+        DrawText("Welcome to Mushroom Fighter", 360, 370, 24, GRAY);
+        
         EndDrawing();
     }
 
@@ -87,6 +78,25 @@ int main(void)
     CloseWindow();
 
     return 0;
+}
+
+void cropSpriteSheetOnDirection(frameInformation *data, Texture2D *sheet)
+{
+    switch (dir)
+    {
+    case LEFT:
+        data->frameRec.y = 1 * (float)(sheet->width / 4);
+        break;
+    case RIGHT:
+        data->frameRec.y = 2 * (float)(sheet->width / 4);
+        break;
+    case UP:
+        data->frameRec.y = 3 * (float)(sheet->width / 4);
+        break;
+    case DOWN:
+        data->frameRec.y = 0 * (float)(sheet->width / 4);
+        break;
+    }
 }
 
 void controlAnimation(frameInformation *data, Texture2D *sheet)
@@ -104,6 +114,7 @@ void controlAnimation(frameInformation *data, Texture2D *sheet)
         data->frameRec.x = (float)data->currentFrame * (float)sheet->width / 4;
     }
 }
+
 bool isPlayerMoving()
 {
     return (IsKeyUp(KEY_D) && IsKeyUp(KEY_RIGHT)) &&
