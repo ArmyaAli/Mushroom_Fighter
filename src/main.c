@@ -12,87 +12,71 @@ typedef enum moveDirection
     RIGHT
 } moveDirection;
 
+typedef struct frameInformation
+{
+    int currentFrame;
+    int framesCounter;
+    int framesSpeed;
+    Rectangle frameRec;
+} frameInformation;
+
+Vector2 playerPosition = 
+{
+    0.0f,
+    0.0f
+};
+
 const int screenHeight = 400;
 const int screenWidth = 800;
+
 moveDirection dir;
-Vector2 playerPosition = {
-    0.0f,
-    0.0f};
 
 void updatePlayerPosition();
+bool isPlayerMoving();
+void controlAnimation(frameInformation *data, Texture2D *sheet);
 
 int main(void)
 {
+    /* MUST BE CALLED BEFORE ANY LOADING OF TEXTURES */
     InitWindow(screenWidth, screenHeight, "Mushroom Fighter");
 
-    // grab our sprite sheet
     Image playerImage = LoadImage("assets/playerhead.png");
     Image playerSpriteSheet = LoadImage("assets/player.png");
 
     Texture2D Player = LoadTextureFromImage(playerImage);
     Texture2D sheet = LoadTextureFromImage(playerSpriteSheet);
 
-    printf("Height: %d Width: %d", Player.height, Player.width);
-    SetTargetFPS(30);
-    int i = 0;
-    int currentFrame = 0;
-
-    int framesCounter = 0;
-    int framesSpeed = 6; // Number of spritesheet frames shown by second
-    Rectangle frameRec = {0.0f, 0.0f, (float)sheet.width / 4, (float)sheet.height / 4};
+    SetTargetFPS(60);
+    frameInformation frameData = {0, 0, 4, {0.0f, 0.0f, (float)sheet.width / 4, (float)sheet.height / 4}};
 
     while (!WindowShouldClose())
     {
-        // Update
-        //----------------------------------------------------------------------------------
-        framesCounter++;
-        bool notMoving = (IsKeyUp(KEY_D) && IsKeyUp(KEY_RIGHT)) &&
-                         (IsKeyUp(KEY_A) && IsKeyUp(KEY_LEFT)) &&
-                         (IsKeyUp(KEY_W) && IsKeyUp(KEY_UP)) &&
-                         (IsKeyUp(KEY_S) && IsKeyUp(KEY_DOWN));
-        printf("moving: %d\n", notMoving);
-        if (framesCounter >= (60 / framesSpeed) && !notMoving)
-        {
-            printf("moving");
-            framesCounter = 0;
-            currentFrame++;
-
-            if (currentFrame > 3)
-                currentFrame = 0;
-            frameRec.x = (float)currentFrame * (float)sheet.width / 4;
-        }
+        controlAnimation(&frameData, &sheet);
 
         if (dir == LEFT)
         {
-            frameRec.y = 1 * (float)(sheet.width / 4);
+            frameData.frameRec.y = 1 * (float)(sheet.width / 4);
         }
 
         if (dir == RIGHT)
         {
-            frameRec.y = 2 * (float)(sheet.width / 4);
+            frameData.frameRec.y = 2 * (float)(sheet.width / 4);
         }
 
         if (dir == UP)
         {
-            frameRec.y = 3 * (float)(sheet.width / 4);
+            frameData.frameRec.y = 3 * (float)(sheet.width / 4);
         }
 
         if (dir == DOWN)
         {
-            frameRec.y = 0 * (float)(sheet.width / 4);
+            frameData.frameRec.y = 0 * (float)(sheet.width / 4);
         }
 
         BeginDrawing();
-        printf("%d\n", dir);
         updatePlayerPosition((Vector2){Player.width, Player.width});
         ClearBackground(RAYWHITE);
-        //DrawTexture(Player, playerPosition.x, playerPosition.y, WHITE);
-        // number of sprites to show
-
-        DrawTextureRec(sheet, frameRec, (Vector2){playerPosition.x, playerPosition.y}, WHITE);
-        i++;
-        if (i > 3)
-            i = 0;
+        DrawTextureRec(sheet, frameData.frameRec, (Vector2){playerPosition.x, playerPosition.y}, WHITE);
         DrawText("this IS a texture!", 360, 370, 10, GRAY);
         EndDrawing();
     }
@@ -105,9 +89,32 @@ int main(void)
     return 0;
 }
 
+void controlAnimation(frameInformation *data, Texture2D *sheet)
+{
+    data->framesCounter++;
+
+    if (data->framesCounter >= (60 / data->framesSpeed) && !isPlayerMoving())
+    {
+        printf("moving");
+        data->framesCounter = 0;
+        data->currentFrame++;
+
+        if (data->currentFrame > 3)
+            data->currentFrame = 0;
+        data->frameRec.x = (float)data->currentFrame * (float)sheet->width / 4;
+    }
+}
+bool isPlayerMoving()
+{
+    return (IsKeyUp(KEY_D) && IsKeyUp(KEY_RIGHT)) &&
+           (IsKeyUp(KEY_A) && IsKeyUp(KEY_LEFT)) &&
+           (IsKeyUp(KEY_W) && IsKeyUp(KEY_UP)) &&
+           (IsKeyUp(KEY_S) && IsKeyUp(KEY_DOWN));
+}
+
 void updatePlayerPosition(const Vector2 playerSize)
 {
-    const float vel = 6.0f;
+    const float vel = 2.0f;
 
     if ((IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) && playerPosition.x < (float)(screenWidth - (playerSize.x + 8)))
     {
