@@ -1,6 +1,6 @@
 ---
 # We'll use defaults from the LLVM style, but with 4 columns indentation.
-BasedOnStyle: Microsoft 
+BasedOnStyle: Microsoft
 IndentWidth: 4
 ---
 Language: Cpp
@@ -12,5 +12,5 @@ AlignConsecutiveMacros: true
 AlignOperands: true
 AlignTrailingComments: true
 AllowShortBlocksOnASingleLine: Empty
-...
+---
 
