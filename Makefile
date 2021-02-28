@@ -1,9 +1,9 @@
 COMPILER=gcc
 C_STANDARD= -std=c99
 WINDOWS_LIBS= -lopengl32 -lgdi32 -lwinmm -luser32 -lkernel32
-INCLUDES= -Isrc/include/ -Iraylib/include/
+INCLUDES= -Iraylib/include/
 COMPILER_WARNINGS= -Wno-missing-braces -Wall
-SOURCE_FILES= src/main.c src/menu.c src/player.c
+SOURCE_FILES= src/main.c src/menu.c src/player.c src/game.c src/lifecycle.c
 
 build:
 	$(COMPILER) $(SOURCE_FILES) -o output/main.exe -O1 $(C_STANDARD) $(COMPILER_WARNINGS) $(INCLUDES) -L raylib/lib/ -lraylib $(WINDOWS_LIBS)
