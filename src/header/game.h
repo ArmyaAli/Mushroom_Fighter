@@ -31,6 +31,7 @@ void controlAnimation(frameInformation* data, Texture2D* sheet);
 void cropSpriteSheetOnDirection(Texture2D* sheet);
 void updateGameState();
 
+extern const char* GAME_TITLE;
 extern int screenHeight;
 extern int screenWidth;
 extern Vector2 playerPosition;

@@ -1,7 +1,8 @@
 #include "./header/game.h"
 
-int screenWidth  = 800;
-int screenHeight = 400;
+const char* GAME_TITLE = "Mushroom Fighter";
+int screenWidth        = 800;
+int screenHeight       = 400;
 
 frameInformation frameData;
 Image playerImage;
@@ -12,11 +13,11 @@ State currentState;
 
 void InitGame()
 {
-    currentState = MENU;
-    playerImage        = LoadImage("assets/playerhead.png");
-    playerSpriteSheet  = LoadImage("assets/player.png");
-    Player             = LoadTextureFromImage(playerImage);
-    sheet              = LoadTextureFromImage(playerSpriteSheet);
+    currentState      = MENU;
+    playerImage       = LoadImage("assets/playerhead.png");
+    playerSpriteSheet = LoadImage("assets/player.png");
+    Player            = LoadTextureFromImage(playerImage);
+    sheet             = LoadTextureFromImage(playerSpriteSheet);
 }
 
 void InitFrameData(Texture2D* sheet)
