@@ -9,6 +9,7 @@ typedef struct MENU_BUTTON
     Rectangle EXIT_BUTTON;
 } menuButtons;
 
+void InitMenu();
 void drawMenu();
 
 extern int screenHeight, screenWidth;

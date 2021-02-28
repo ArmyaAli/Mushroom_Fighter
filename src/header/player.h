@@ -10,7 +10,7 @@ typedef enum moveDirection
     RIGHT
 } moveDirection;
 
-void initMenu();
+void InitMenu();
 void updatePlayerPosition();
 bool isPlayerMoving();
 

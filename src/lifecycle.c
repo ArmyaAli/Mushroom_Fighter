@@ -5,7 +5,7 @@ void Init()
     const char* GAME_TITLE = "Mushroom Fighter";
     /* MUST BE CALLED BEFORE ANY LOADING OF TEXTURES */
     InitWindow(screenWidth, screenHeight, GAME_TITLE);
-    initMenu();
+    InitMenu();
     InitGame();
     SetTargetFPS(60);
     InitFrameData(&sheet);

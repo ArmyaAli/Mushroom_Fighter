@@ -2,7 +2,7 @@
 
 menuButtons STRUCT_MENU_BUTTONS;
 
-void initMenu()
+void InitMenu()
 {
     STRUCT_MENU_BUTTONS.PLAY_BUTTON = (Rectangle){screenWidth / 2 - 100, screenHeight / 4 - 40, 200, 80};
     STRUCT_MENU_BUTTONS.HELP_BUTTON = (Rectangle){screenWidth / 2 - 100, screenHeight / 4 + 80, 200, 80};

@@ -1,22 +1,22 @@
 #include "./header/game.h"
 
-STATE currentState = MENU;
-int screenWidth    = 800;
-int screenHeight   = 400;
+int screenWidth  = 800;
+int screenHeight = 400;
 
 frameInformation frameData;
-
 Image playerImage;
 Image playerSpriteSheet;
 Texture2D Player;
 Texture2D sheet;
+State currentState;
 
 void InitGame()
 {
-    playerImage       = LoadImage("assets/playerhead.png");
-    playerSpriteSheet = LoadImage("assets/player.png");
-    Player        = LoadTextureFromImage(playerImage);
-    sheet         = LoadTextureFromImage(playerSpriteSheet);
+    currentState = MENU;
+    playerImage        = LoadImage("assets/playerhead.png");
+    playerSpriteSheet  = LoadImage("assets/player.png");
+    Player             = LoadTextureFromImage(playerImage);
+    sheet              = LoadTextureFromImage(playerSpriteSheet);
 }
 
 void InitFrameData(Texture2D* sheet)
@@ -68,7 +68,6 @@ void updateGameState()
     switch (currentState)
     {
     case MENU:
-        printf("%d %d\n", STRUCT_MENU_BUTTONS.PLAY_BUTTON.height, STRUCT_MENU_BUTTONS.PLAY_BUTTON.width);
         if (CheckCollisionPointRec(mousePos, STRUCT_MENU_BUTTONS.PLAY_BUTTON))
         {
             if (IsMouseButtonPressed(0))
@@ -96,6 +95,12 @@ void updateGameState()
         {
             currentState = PLAY;
         }
+        break;
+    case HELP:
+        // if (IsKeyPressed(KEY_ESCAPE))
+        // {
+        //     currentState = MENU;
+        // }
         break;
     }
 }

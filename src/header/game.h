@@ -1,6 +1,5 @@
 #ifndef GAME_H
 #define GAME_H
-
 #include "menu.h"
 #include "player.h"
 
@@ -10,7 +9,7 @@ typedef enum gameState
     PAUSE,
     MENU,
     HELP
-} STATE;
+} State;
 
 typedef struct frameInformation
 {
@@ -26,8 +25,8 @@ void Update();
 void Draw();
 void Destroy();
 
-void initGame();
-void initFrameData(Texture2D* sheet);
+void InitGame();
+void InitFrameData(Texture2D* sheet);
 void controlAnimation(frameInformation* data, Texture2D* sheet);
 void cropSpriteSheetOnDirection(Texture2D* sheet);
 void updateGameState();
@@ -35,7 +34,7 @@ void updateGameState();
 extern int screenHeight;
 extern int screenWidth;
 extern Vector2 playerPosition;
-extern STATE currentState;
+extern State currentState;
 extern frameInformation frameData;
 extern moveDirection dir;
 extern menuButtons STRUCT_MENU_BUTTONS;
