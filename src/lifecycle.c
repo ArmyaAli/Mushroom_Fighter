@@ -15,6 +15,7 @@ void Update()
     controlAnimation(&frameData, &sheet);
     cropSpriteSheetOnDirection(&sheet);
     updateGameState();
+    updatePlayerPosition((Vector2){Player.width, Player.width});
 }
 
 void Draw()
@@ -31,7 +32,6 @@ void Draw()
         DrawText("You are in the HELP screen", 360, 370, 24, GRAY);
         break;
     case PLAY:
-        updatePlayerPosition((Vector2){Player.width, Player.width});
         DrawTextureRec(sheet, frameData.frameRec, (Vector2){playerPosition.x, playerPosition.y}, WHITE);
         DrawText("Welcome to Mushroom Fighter", 360, 370, 24, GRAY);
         break;
