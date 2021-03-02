@@ -1,8 +1,9 @@
 #include "./header/game.h"
 
 const char* GAME_TITLE = "Mushroom Fighter";
-int screenWidth        = 800;
-int screenHeight       = 400;
+// const int FPS_COUNT = 60;
+int screenWidth  = 800;
+int screenHeight = 400;
 
 frameInformation frameData;
 Image playerImage;
