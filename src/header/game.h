@@ -34,6 +34,7 @@ void updateGameState();
 extern const char* GAME_TITLE;
 extern int screenHeight;
 extern int screenWidth;
+extern int FPS_COUNT;
 extern Vector2 playerPosition;
 extern State currentState;
 extern frameInformation frameData;
