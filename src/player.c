@@ -2,6 +2,7 @@
 
 static float playerVelocity = 2.0f;
 Vector2 playerPosition      = {0.0f, 0.0f};
+moveDirection dir;
 
 bool isPlayerMoving()
 {
@@ -11,7 +12,7 @@ bool isPlayerMoving()
 
 void updatePlayerPosition(const Vector2 playerSize)
 {
-    if ((IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) && playerPosition.x < (float)(screenHeight - (playerSize.x + 8)))
+    if ((IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) && playerPosition.x < (float)(screenWidth - (playerSize.x + 8)))
     {
         dir = RIGHT;
         playerPosition.x += playerVelocity;
