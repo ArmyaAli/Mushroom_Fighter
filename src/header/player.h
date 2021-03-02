@@ -14,7 +14,8 @@ void InitMenu();
 void updatePlayerPosition();
 bool isPlayerMoving();
 
-moveDirection dir;
+extern moveDirection dir;
+extern Vector2 playerPosition;
 
 extern int screenHeight;
 extern int screenWidth;
