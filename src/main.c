@@ -1,17 +1,49 @@
-#include "./header/game.h"
+#include <stdio.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
 
-int main(void)
+/*
+    Create a TCP socket
+*/
+
+#include <stdio.h>
+#include <winsock2.h>
+
+int main(int argc, char* argv[])
 {
-    Init();
+    WSADATA wsa;
+    SOCKET s;
+    struct sockaddr_in server;
 
-    while (!WindowShouldClose())
+    printf("\nInitialising Winsock...");
+    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
     {
-        Update();
-        Draw();
+        printf("Failed. Error Code : %d", WSAGetLastError());
+        return 1;
     }
-    
-    Destroy();
-    CloseWindow();
+
+    printf("Initialised.\n");
+
+    // Create a socket
+    if ((s = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET)
+    {
+        printf("Could not create socket : %d", WSAGetLastError());
+    }
+
+    printf("Socket created.\n");
+
+    server.sin_addr.s_addr = inet_addr("172.217.1.174");
+    server.sin_family      = AF_INET;
+    server.sin_port        = htons(80);
+
+    // Connect to remote server
+    if (connect(s, (struct sockaddr*)&server, sizeof(server)) < 0)
+    {
+        puts("connect error");
+        return 1;
+    }
+
+    puts("Connected");
 
     return 0;
 }
