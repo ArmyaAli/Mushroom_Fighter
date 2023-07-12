@@ -1,0 +1,16 @@
+Gameplay notes
+---------------------
+2 player game only - Easier for my development. NO "AI" at this time. I do not wish to program a computer player at this point. Would like a working game first (AI CAN BE AN AFTERTHOUGHT)
+Controller support
+Health bars
+2D fighting game
+Each character will have different attacks
+	Each character should be named
+	Each character attack should be named
+	Each character should have a corresponding Attack/Control help menu and a description
+Mushroom theme - One character should be a mushroom !important
+Raylib will be used for graphics (opengl backend) and interfacing with OS + peripherals (It has controller support!!)
+
+NOTES:
+Raylib is single threaded (OPENGL limitation)
+
