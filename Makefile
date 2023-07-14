@@ -19,7 +19,6 @@ OS_LIBS     := -lgdi32 -lwinmm -lopengl32
 INC_DIR     := -Iinclude -Iinclude\raylib
 LIB_DIR     := -Llib
 STATIC_LIBS := -static -lraylib
-
 SRC_FILES   :=   src\main.c    $\
 				 src\logger.c 
 
@@ -27,7 +26,7 @@ run : build
 	@build\main
 
 build : setup
-	@gcc $(SRC_FILES) $(LIB_DIR) $(STATIC_LIBS) $(OS_LIBS) $(INC_DIR) -o $(BUILD_DIR)\main.exe 
+	@gcc $(SRC_FILES) $(LIB_DIR) $(STATIC_LIBS) $(OS_LIBS) $(INC_DIR) -std=c99 -o $(BUILD_DIR)\main.exe 
 
 setup : 
 	@IF NOT EXIST $(BUILD_DIR) ( MKDIR $(BUILD_DIR) ) 
