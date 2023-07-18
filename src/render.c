@@ -1,8 +1,9 @@
-#include "render.h"
 #include <stdio.h>
+
+#include "render.h"
 #include "logger.h"
 #include "enums.h"
-#include "structs.h"
+#include "animation.h"
 
 extern int WINDOW_WIDTH;
 extern int WINDOW_HEIGHT;
@@ -63,15 +64,8 @@ void update_game()
 {
     LOG(INFO, "BEGIN update_game()");
 
-    if (player_1.pos.x <= WINDOW_WIDTH - 64.0f && IsKeyDown(KEY_D)) player_1.pos.x += 10;
-    if (player_1.pos.x >= 16.0f && IsKeyDown(KEY_A)) player_1.pos.x -= 10;
-    if (player_1.pos.y >= 16.0f && IsKeyDown(KEY_W)) player_1.pos.y -= 10;
-    if (player_1.pos.y <= WINDOW_HEIGHT - 64.0f && IsKeyDown(KEY_S)) player_1.pos.y += 10;
-
-    if (player_2.pos.x <= WINDOW_WIDTH - 64.0f && IsKeyDown(KEY_RIGHT)) player_2.pos.x += 10;
-    if (player_2.pos.x >= 16.0f && IsKeyDown(KEY_LEFT)) player_2.pos.x -= 10;
-    if (player_2.pos.y >= 16.0f && IsKeyDown(KEY_UP)) player_2.pos.y -= 10;
-    if (player_2.pos.y <= WINDOW_HEIGHT - 64.0f && IsKeyDown(KEY_DOWN)) player_2.pos.y += 10;
+    shroom_walk(&player_1);
+    shroom_walk(&player_2);
 
     LOG(INFO, "END update_game()");
 }
