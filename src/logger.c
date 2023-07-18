@@ -11,7 +11,7 @@ void LOG(enum LOG_LEVEL level, const char *message)
     time(&raw_time);
     curr_time= localtime(&raw_time);
 
-    sprintf(output, "[%s][%d-%02d-%02dT%02d:%02d:%02d]:[%s]\n", 
+    sprintf(output, "[%s]:[%d-%02d-%02dT%02d:%02d:%02d]:[%s]\n", 
             map_log_level(level), 
             1900 + curr_time->tm_year, 
             1 + curr_time->tm_mon, 
